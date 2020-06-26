@@ -6,19 +6,24 @@ services:
     container_name: appquarium.apigateway
     restart: on-failure
     environment:
-      APP_ENV: prod
-      USER_BASE_URL: http://local.apiuser.appquarium.fr/
-      SPECIES_BASE_URL: http://local.apispecies.appquarium.fr/
+      USER_BASE_URL: https://apiuser.appquarium.fr/
+      SPECIES_BASE_URL: https://apispecies.appquarium.fr/
+      VIRTUAL_HOST: apigateway.appquarium.fr
+      VIRTUAL_PORT: 9000
+      VIRTUAL_PROTO: fastcgi
     user: '1000:1000'
+
 
   apiuser:
     image: deozza/appquarium-apiuser
     container_name: appquarium.apiuser
     restart: on-failure
     environment:
-      APP_ENV: prod
       MONGODB_URL: mongodb+srv://edenn:CmzVS2udbw9aRGJx@appquarium-microservice-rjsyh.mongodb.net/apiuser?retryWrites=true&w=majority
       MONGODB_DB: apiuser
+      VIRTUAL_HOST: apiuser.appquarium.fr
+      VIRTUAL_PORT: 9000
+      NETWORK_ACCESS: internal
     user: '1000:1000'
 
   apispecies:
@@ -26,17 +31,20 @@ services:
     container_name: appquarium.apispecies
     restart: on-failure
     environment:
-      APP_ENV: prod
       MONGODB_URL: mongodb+srv://edenn:CmzVS2udbw9aRGJx@appquarium-microservice-rjsyh.mongodb.net/apispecies?retryWrites=true&w=majority
       MONGODB_DB: apispecies
+      VIRTUAL_HOST: apigateway.appquarium.fr
+      VIRTUAL_PORT: 9000
+      NETWORK_ACCESS: internal
     user: '1000:1000'
 
   nginx-proxy:
-    image: deozza/appquarium-nginx
-    build:
-      context: .
-      dockerfile: .docker/nginx/Dockerfile
+    image: jwilder/nginx-proxy
     container_name: nginx-proxy
+    volumes:
+    - /var/run/docker.sock:/tmp/docker.sock:ro
+    - .docker/nginx/vhost.d:/etc/nginx/vhost.d:ro
+    - .docker/nginx/proxy.conf:/etc/nginx/proxy.conf:ro
     depends_on:
       - apigateway
       - apispecies
