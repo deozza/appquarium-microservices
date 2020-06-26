@@ -4,13 +4,11 @@ server {
     listen [::]:80;
     index index.php index.html;
     server_name apispecies.appquarium.fr;
-    root /var/www/apiSpecies/public;
 
     location / {
         # try to serve file directly, fallback to index.php
         try_files $uri $uri/ /index.php$is_args$args;
     }
-
 
     location ~ \.php {
         set $upstream_endpoint apispecies;
