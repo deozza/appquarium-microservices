@@ -34,14 +34,15 @@ services:
       NETWORK_ACCESS: internal
     user: '1000:1000'
 
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    volumes:
-    - /var/run/docker.sock:/tmp/docker.sock:ro
-    - .docker/nginx/proxy.conf:/etc/nginx/proxy.conf:ro
+  nginx:
+    image: deozza/appquarium-nginx
+    restart: always
+    build:
+      context: .
+      dockerfile: .docker/nginx/Dockerfile
+    ports:
+      - 80:80
     depends_on:
       - apigateway
       - apispecies
       - apiuser
-    ports:
-      - 80:80
