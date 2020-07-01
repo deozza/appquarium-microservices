@@ -8,32 +8,16 @@ services:
       USER_BASE_URL: https://apiuser.appquarium.fr/
       SPECIES_BASE_URL: https://apispecies.appquarium.fr/
     user: '1000:1000'
-    expose:
-      - 9000
-
-  apiuser:
-    image: deozza/appquarium-apiuser
-    restart: on-failure
-    environment:
-      MONGODB_URL: mongodb+srv://edenn:CmzVS2udbw9aRGJx@appquarium-microservice-rjsyh.mongodb.net/apiuser?retryWrites=true&w=majority
-      MONGODB_DB: apiuser
-      NETWORK_ACCESS: internal
-    user: '1000:1000'
-    expose:
-      - 9000
-
-  apispecies:
-    image: deozza/appquarium-apispecies
-    restart: on-failure
-    environment:
-      MONGODB_URL: mongodb+srv://edenn:CmzVS2udbw9aRGJx@appquarium-microservice-rjsyh.mongodb.net/apispecies?retryWrites=true&w=majority
-      MONGODB_DB: apispecies
-    user: '1000:1000'
-    expose:
-      - 9000
 
   nginx:
-    image: nginx
+    image: deozza/appquarium-nginx
     restart: always
+    build:
+      context: .
+      dockerfile: .docker/nginx/Dockerfile
+    depends_on:
+      - apigateway
+    links:
+      - apigateway
     ports:
       - 8080:80
