@@ -8,6 +8,8 @@ services:
       USER_BASE_URL: https://apiuser.appquarium.fr/
       SPECIES_BASE_URL: https://apispecies.appquarium.fr/
     user: '1000:1000'
+    ports:
+      - 8000:9000
 
   apiuser:
     image: deozza/appquarium-apiuser
@@ -17,6 +19,8 @@ services:
       MONGODB_DB: apiuser
       NETWORK_ACCESS: internal
     user: '1000:1000'
+    ports:
+      - 8001:9000
 
   apispecies:
     image: deozza/appquarium-apispecies
@@ -25,6 +29,8 @@ services:
       MONGODB_URL: mongodb+srv://edenn:CmzVS2udbw9aRGJx@appquarium-microservice-rjsyh.mongodb.net/apispecies?retryWrites=true&w=majority
       MONGODB_DB: apispecies
     user: '1000:1000'
+    ports:
+      - 8002:9000
 
   nginx:
     image: deozza/appquarium-nginx
