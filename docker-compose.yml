@@ -38,3 +38,7 @@ services:
       - apigateway
       - apispecies
       - apiuser
+    links:
+      - apigateway
+      - apiuser
+      - apispecies
