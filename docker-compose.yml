@@ -33,18 +33,7 @@ services:
       - 9000
 
   nginx:
-    image: deozza/appquarium-nginx
+    image: nginx
     restart: always
-    build:
-      context: .
-      dockerfile: .docker/nginx/Dockerfile
     ports:
-      - 80:80
-    depends_on:
-      - apigateway
-      - apispecies
-      - apiuser
-    links:
-      - apigateway
-      - apiuser
-      - apispecies
+      - 8080:80
