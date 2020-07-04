@@ -15,6 +15,7 @@ services:
     environment:
       MONGODB_URL: mongodb+srv://edenn:CmzVS2udbw9aRGJx@appquarium-microservice-rjsyh.mongodb.net/apiuser?retryWrites=true&w=majority
       MONGODB_DB: apiuser
+      CORS_ALLOW_ORIGIN: https://apigateway.appquarium.fr
     user: '1000:1000'
 
   apispecies:
@@ -23,6 +24,7 @@ services:
     environment:
       MONGODB_URL: mongodb+srv://edenn:CmzVS2udbw9aRGJx@appquarium-microservice-rjsyh.mongodb.net/apispecies?retryWrites=true&w=majority
       MONGODB_DB: apispecies
+      CORS_ALLOW_ORIGIN: https://apigateway.appquarium.fr
     user: '1000:1000'
 
   nginx:
@@ -32,8 +34,7 @@ services:
       context: .
       dockerfile: .docker/nginx/Dockerfile
     volumes:
-      - .docker/certbot/conf:/etc/letsencrypt
-      - .docker/certbot/www:/var/www/certbot
+      - /etc/letsencrypt/live/appquarium.fr/:/certs
     depends_on:
       - apigateway
     links:
