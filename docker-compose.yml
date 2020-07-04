@@ -34,7 +34,7 @@ services:
       context: .
       dockerfile: .docker/nginx/Dockerfile
     volumes:
-      - /etc/letsencrypt/live/appquarium.fr/:/certs
+      - /etc/letsencrypt/live/appquarium.fr:/certs
     depends_on:
       - apigateway
     links:
