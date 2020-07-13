@@ -2,12 +2,12 @@ version: '3.7'
 services:
 
   apigateway:
-    image: deozza/appquarium-apigateway:a8ee9f9
+    image: deozza/appquarium-apigateway:af6e4d8
     restart: on-failure
     user: '1000:1000'
 
   apiuser:
-    image: deozza/appquarium-apiuser:dd45c93
+    image: deozza/appquarium-apiuser:cfc37d7
     restart: on-failure
     environment:
       MONGODB_URL: mongodb+srv://edenn:CmzVS2udbw9aRGJx@appquarium-microservice-rjsyh.mongodb.net/apiuser?retryWrites=true&w=majority
@@ -15,7 +15,7 @@ services:
     user: '1000:1000'
 
   apispecies:
-    image: deozza/appquarium-apispecies:706ef1d
+    image: deozza/appquarium-apispecies:60fbd1c
     restart: on-failure
     environment:
       MONGODB_URL: mongodb+srv://edenn:CmzVS2udbw9aRGJx@appquarium-microservice-rjsyh.mongodb.net/apispecies?retryWrites=true&w=majority
