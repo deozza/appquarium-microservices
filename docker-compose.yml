@@ -36,6 +36,8 @@ services:
     volumes:
       - .docker/nginx/conf.d/:/etc/nginx/conf.d:ro
       - /etc/letsencrypt/:/etc/letsencrypt
+    environment:
+      CORS_ALLOW_ORIGIN: https://apigateway.appquarium.fr
     depends_on:
       - apigateway
     links:
