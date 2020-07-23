@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+
+  appquarium-php-apigateway:
+    image: deozza/appquarium-apigateway
+    build:
+      context: ./dockered-apiGateway
+      dockerfile: .docker/php/Dockerfile.dev
+    container_name: appquarium-php-apigateway
+    volumes:
+      - ./dockered-apiGateway/apiGateway/:/var/www/apiGateway
+    restart: on-failure
+    ports:
+      - 8000:8000
+
+  appquarium-mongo-apiuser:
+    image: mongo
+    container_name: appquarium-mongo-apiuser
+    environment:
+      MONGO_INITDB_DATABASE: appquarium_apiuser
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - ./dockered-apiUser/.docker/mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    ports:
+      - 27017:27017
+
+  appquarium-php-apiuser:
+    image: deozza/appquarium-apiuser
+    build:
+      context: ./dockered-apiUser
+      dockerfile: .docker/php/Dockerfile.dev
+    container_name: appquarium-php-apiuser
+    volumes:
+      - ./dockered-apiUser/apiUser/:/var/www/apiUser
+    restart: on-failure
+    ports:
+      - 8001:8001
